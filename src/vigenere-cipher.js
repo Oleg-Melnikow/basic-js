@@ -1,4 +1,4 @@
-const { NotImplementedError } = require('../lib');
+const { NotImplementedError } = require("../lib");
 
 /**
  * Implement class VigenereCipheringMachine that allows us to create
@@ -20,14 +20,68 @@ const { NotImplementedError } = require('../lib');
  *
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    // Remove line below and write your code here
-    throw new NotImplementedError('Not implemented');
+  constructor(machineType = true) {
+    this.machineType = machineType;
+    this.startCode = 65;
+    this.count = 26;
   }
 
-  decrypt() {
-    // Remove line below and write your code here
-    throw new NotImplementedError('Not implemented');
+  encrypt(message, key) {
+    if (!(message && key)) {
+      throw Error("Incorrect arguments!");
+    }
+
+    let keyUp = key.toUpperCase();
+    let messageUp = message.toUpperCase();
+    let result = [];
+    let index = 0;
+
+    for (let i = 0; i < messageUp.length; i++) {
+      if (
+        messageUp.charCodeAt(i) < this.startCode ||
+        messageUp.charCodeAt(i) > 90
+      ) {
+        result.push(messageUp[i]);
+      } else {
+        let Idx = messageUp.charCodeAt(i) - this.startCode;
+        let shift = keyUp.charCodeAt(index % keyUp.length) - this.startCode;
+        result.push(
+          String.fromCharCode(this.startCode + ((Idx + shift) % this.count)),
+        );
+        index++;
+      }
+    }
+    return this.machineType ? result.join("") : result.reverse().join("");
+  }
+
+  decrypt(message, key) {
+    if (!(message && key)) {
+      throw Error("Incorrect arguments!");
+    }
+
+    let keyUp = key.toUpperCase();
+    let messageUp = message.toUpperCase();
+    let result = [];
+    let index = 0;
+
+    for (let i = 0; i < messageUp.length; i++) {
+      if (
+        messageUp.charCodeAt(i) < this.startCode ||
+        messageUp.charCodeAt(i) > 90
+      ) {
+        result.push(messageUp[i]);
+      } else {
+        let Idx = messageUp.charCodeAt(i) - this.startCode;
+        let shift = keyUp.charCodeAt(index % keyUp.length) - this.startCode;
+        result.push(
+          String.fromCharCode(
+            this.startCode + ((Idx - shift + this.count) % this.count),
+          ),
+        );
+        index++;
+      }
+    }
+    return this.machineType ? result.join("") : result.reverse().join("");
   }
 }
 

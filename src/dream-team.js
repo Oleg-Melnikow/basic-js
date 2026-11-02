@@ -1,4 +1,4 @@
-const { NotImplementedError } = require('../lib');
+const { NotImplementedError } = require("../lib");
 
 /**
  * Create name of dream team based on the names of its members
@@ -13,11 +13,27 @@ const { NotImplementedError } = require('../lib');
  * createDreamTeam(['Olivia', 1111, 'Lily', 'Oscar', true, null]) => 'LOO'
  *
  */
-function createDreamTeam(/* members */) {
-  // Remove line below and write your code here
-  throw new NotImplementedError('Not implemented');
+function createDreamTeam(DreamTeam) {
+  if (Array.isArray(DreamTeam)) {
+    return DreamTeam.reduce((acc, cur) => {
+      return typeof cur === "string"
+        ? [...acc, cur.trim().toUpperCase()[0]]
+        : acc;
+    }, [])
+      .sort((a, b) => {
+        if (a > b) {
+          return 1;
+        }
+        if (b > a) {
+          return -1;
+        }
+        return 0;
+      })
+      .join("");
+  }
+  return false;
 }
 
 module.exports = {
-  createDreamTeam
+  createDreamTeam,
 };
